@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from "./Auth.module.css"
 import {useDispatch} from 'react-redux'
 import {auth, provider, storage} from "../firebase/firebase"
-import {signInWithPopup} from "firebase/auth";
+import {signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
 
 import {
     Avatar,
@@ -16,8 +16,11 @@ import {
     Grid,
     Typography,
     createTheme,
-    ThemeProvider
+    ThemeProvider,
 } from '@mui/material'
+
+import EmailIcon from '@mui/icons-material/Email';
+
 
 const CopyRight: React.FC = () => {
     return (
@@ -36,12 +39,32 @@ const theme = createTheme();
 
 const Auth = () => {
 
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [isLogin, setIsLogin] = useState(true)
+
+    const signInEmail = async () => {
+        try {
+            await signInWithEmailAndPassword(auth, email, password)
+        } catch (e: any) {
+            console.log(e.message)
+        }
+    }
+
+    const signUpEmail = async () => {
+        try {
+            await createUserWithEmailAndPassword(auth, email, password)
+        } catch (e: any) {
+            console.log(e.message)
+        }
+    }
+
 
     const sighInGoogle = async () => {
         try {
             await signInWithPopup(auth, provider)
         } catch (e: any) {
-            alert(e.message)
+            console.log(e.message)
         }
     }
 
@@ -77,7 +100,7 @@ const Auth = () => {
                             {/*<LockOutlinedIcon />*/}
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Sign in
+                            {isLogin ? "Login" : "Register"}
                         </Typography>
                         <Box component="form" noValidate sx={{mt: 1}}>
                             <TextField
@@ -89,6 +112,8 @@ const Auth = () => {
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
+                                value={email}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                             />
                             <TextField
                                 margin="normal"
@@ -99,15 +124,35 @@ const Auth = () => {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                value={password}
+                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                             />
                             <Button
-                                type="submit"
                                 fullWidth
                                 variant="contained"
                                 sx={{mt: 3, mb: 2}}
+                                startIcon={<EmailIcon/>}
+                                onClick={
+                                    isLogin ?
+                                        signInEmail : signUpEmail
+                                }
                             >
-                                Sign In
+                                {isLogin ? "Login" : "Register"}
                             </Button>
+                            <Grid container>
+                                <Grid item xs>
+                                    <span className={styles.login_reset}>
+                                    Forgot password
+                                    </span>
+                                </Grid>
+                                <Grid item xs>
+                                    <span
+                                        className={styles.login_toggleMode}
+                                        onClick={() => setIsLogin(!isLogin)}>
+                                {isLogin ? "Create new account?" : "Back to login"}
+                                    </span>
+                                </Grid>
+                            </Grid>
                         </Box>
                         <Button
                             fullWidth

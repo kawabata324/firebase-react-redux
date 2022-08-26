@@ -1,9 +1,13 @@
 import React from "react"
+import {auth} from "../firebase/firebase"
 
 const Feed: React.FC = () => {
-    return(
+    return (
         <div>
             Feed
+            <button onClick={() => auth.signOut()}>
+                Logout
+            </button>
         </div>
     )
 }
