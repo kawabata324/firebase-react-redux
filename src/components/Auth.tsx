@@ -1,24 +1,11 @@
 import React, {useState} from 'react';
 import styles from "./Auth.module.css"
-import {useDispatch} from 'react-redux'
-import {updateUserProfile} from "../features/userSlice"
-import {auth, provider, storage} from "../firebase/firebase"
-import {
-    signInWithPopup,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    updateProfile,
-    sendPasswordResetEmail
-} from "firebase/auth";
-import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 
 import {
     Avatar,
     Button,
     CssBaseline,
     TextField,
-    Checkbox,
-    Link,
     Paper,
     Box,
     Grid,
@@ -33,19 +20,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SendIcon from '@mui/icons-material/Send';
 import CameraIcon from '@mui/icons-material/Camera';
-
-const CopyRight: React.FC = () => {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" sx={{mt: 5}}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import {useAuth} from "../hooks/useAuth";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -64,88 +39,33 @@ const style = {
 const theme = createTheme();
 
 const Auth = () => {
-    const dispatch = useDispatch()
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [userName, setUserName] = useState("")
-    const [avaterImage, setAvatarImage] = useState<File | null>(null)
+    const {
+        email,
+        setEmail,
+        password,
+        setPassword,
+        userName,
+        setUserName,
+        avatarImage,
+        setAvatarImage,
+        resetEmail,
+        setResetEmail,
+        signUpEmail,
+        signInEmail,
+        sighInGoogle,
+        sendResetEmail
+    } = useAuth()
     const [isLogin, setIsLogin] = useState(true)
     const [openModal, setOpenModal] = useState(false)
-    const [resetEmail, setResetEmail] = useState("")
 
 
-    const sendResetEmail = async () => {
-        try {
-            await sendPasswordResetEmail(auth, resetEmail)
-        } catch (e: any) {
-            console.log(e.message)
-        } finally {
-            setResetEmail("")
-        }
-    }
-
-
-    const onChagngeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files![0]) {
             setAvatarImage(e.target.files![0])
             e.target.value = ""
         }
     }
 
-    const signInEmail = async () => {
-        try {
-            await signInWithEmailAndPassword(auth, email, password)
-        } catch (e: any) {
-            console.log(e.message)
-        }
-    }
-
-    const getUniqueStr = (myStrong?: number): string => {
-        let strong = 1000;
-        if (myStrong) strong = myStrong;
-        return (
-            new Date().getTime().toString(16) +
-            Math.floor(strong * Math.random()).toString(16)
-        );
-    }
-
-    const signUpEmail = async () => {
-        try {
-            const authUser = await createUserWithEmailAndPassword(auth, email, password)
-            let url = ""
-            if (avaterImage) {
-                const fileName = getUniqueStr(16) + "_" + avaterImage.name
-
-                const storageRef = ref(storage, `avaters/${fileName}`)
-                await uploadBytes(storageRef, avaterImage)
-                    .then((snap) => console.log('upload a blob'))
-                    .catch(e => console.log(e))
-
-                url = await getDownloadURL(storageRef)
-                await updateProfile(auth.currentUser!, {
-                    displayName: userName,
-                    photoURL: url
-                })
-
-                await dispatch(updateUserProfile({
-                    displayName: userName,
-                    photoUrl: url
-                }))
-
-            }
-        } catch (e: any) {
-            console.log(e.message)
-        }
-    }
-
-
-    const sighInGoogle = async () => {
-        try {
-            await signInWithPopup(auth, provider)
-        } catch (e: any) {
-            console.log(e.message)
-        }
-    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -202,7 +122,7 @@ const Auth = () => {
                                                 <AccountCircleIcon
                                                     fontSize="large"
                                                     className={
-                                                        avaterImage
+                                                        avatarImage
                                                             ? styles.login_addIconLoaded
                                                             : styles.login_addIcon
                                                     }
@@ -210,7 +130,7 @@ const Auth = () => {
                                                 <input
                                                     type="file"
                                                     className={styles.login_hiddenIcon}
-                                                    onChange={onChagngeImageHandler}
+                                                    onChange={onChangeImageHandler}
                                                 />
                                             </label>
                                         </IconButton>
@@ -245,7 +165,7 @@ const Auth = () => {
                             <Button
                                 disabled={
                                     isLogin ? !email || password.length < 6
-                                        : !userName || !email || password.length < 6 || !avaterImage
+                                        : !userName || !email || password.length < 6 || !avatarImage
                                 }
                                 fullWidth
                                 variant="contained"
@@ -289,7 +209,7 @@ const Auth = () => {
                 </Grid>
             </Grid>
 
-
+            {/*Reset Password Modal*/}
             <Modal
                 open={openModal}
                 onClose={() => setOpenModal(false)}
@@ -307,7 +227,6 @@ const Auth = () => {
                     <IconButton onClick={sendResetEmail}>
                         <SendIcon/>
                     </IconButton>
-
                 </Box>
             </Modal>l
 
