@@ -2,9 +2,9 @@ import {Box, Button, Grid, IconButton, TextField} from "@mui/material";
 import React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import styles from "./Auth.module.css";
-import EmailIcon from "@mui/icons-material/Email";
-import CameraIcon from "@mui/icons-material/Camera";
 import {useAuth} from "../hooks/useAuth";
+import GoogleSignInButton from "./button/GoogleSignInButton";
+import EmailAuthButton from "./button/EmailAuthButton";
 
 interface Props {
     isLogin: boolean
@@ -27,8 +27,6 @@ const Form: React.FC<Props> = (props) => {
         setAvatarImage,
         signUpEmail,
         signInEmail,
-        sighInGoogle,
-
     } = useAuth()
 
     const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,26 +93,11 @@ const Form: React.FC<Props> = (props) => {
                 label="Password"
                 type="password"
                 id="password"
-                autoComplete="current-password"
+                autoComplete="password"
                 value={password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             />
-            <Button
-                disabled={
-                    isLogin ? !email || password.length < 6
-                        : !userName || !email || password.length < 6 || !avatarImage
-                }
-                fullWidth
-                variant="contained"
-                sx={{mt: 3, mb: 2}}
-                startIcon={<EmailIcon/>}
-                onClick={
-                    isLogin ?
-                        signInEmail : signUpEmail
-                }
-            >
-                {isLogin ? "Login" : "Register"}
-            </Button>
+            <EmailAuthButton/>
             <Grid container>
                 <Grid item xs>
                                     <span
@@ -132,15 +115,7 @@ const Form: React.FC<Props> = (props) => {
                                     </span>
                 </Grid>
             </Grid>
-            <Button
-                fullWidth
-                variant="contained"
-                sx={{mt: 3, mb: 2}}
-                startIcon={<CameraIcon/>}
-                onClick={sighInGoogle}
-            >
-                SignIn with Google
-            </Button>
+            <GoogleSignInButton/>
         </Box>
 
     )

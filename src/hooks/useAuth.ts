@@ -19,6 +19,7 @@ export const useAuth = () => {
     const [userName, setUserName] = useState("")
     const [avatarImage, setAvatarImage] = useState<File | null>(null)
     const [resetEmail, setResetEmail] = useState("")
+    const [isLogin, setIsLogin] = useState(false)
 
 
     const dispatch = useDispatch()
@@ -127,6 +128,8 @@ export const useAuth = () => {
         setAvatarImage,
         resetEmail,
         setResetEmail,
+        isLogin,
+        setIsLogin,
         signUpEmail,
         signInEmail,
         sighInGoogle,

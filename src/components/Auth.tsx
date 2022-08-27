@@ -14,13 +14,15 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import ResetPassWordModal from "./ResetPassWordModal";
 import Form from "./Form";
+import {useAuth} from "../hooks/useAuth";
 
 
 const theme = createTheme();
 
 const Auth = () => {
-    const [isLogin, setIsLogin] = useState(true)
     const [openModal, setOpenModal] = useState(false)
+
+    const {isLogin, setIsLogin} = useAuth()
 
 
     return (
