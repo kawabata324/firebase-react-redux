@@ -1,10 +1,11 @@
-import {Box, Button, Grid, IconButton, TextField} from "@mui/material";
+import {Box, Grid, IconButton, TextField} from "@mui/material";
 import React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import styles from "./Auth.module.css";
 import {useAuth} from "../hooks/useAuth";
 import GoogleSignInButton from "./button/GoogleSignInButton";
 import EmailAuthButton from "./button/EmailAuthButton";
+import BaseInput from "./input/BaseInput";
 
 interface Props {
     isLogin: boolean
@@ -25,8 +26,6 @@ const Form: React.FC<Props> = (props) => {
         setUserName,
         avatarImage,
         setAvatarImage,
-        signUpEmail,
-        signInEmail,
     } = useAuth()
 
     const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,17 +38,11 @@ const Form: React.FC<Props> = (props) => {
         <Box component="form" noValidate sx={{mt: 1}}>
             {!isLogin && (
                 <>
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="userName"
-                        label="User Name"
+                    <BaseInput
                         name="userName"
-                        autoComplete="userName"
-                        autoFocus
+                        label="User Name"
                         value={userName}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUserName(e.target.value)}
+                        setValue={setUserName}
                     />
                     <Box textAlign="center">
                         <IconButton>
@@ -72,30 +65,18 @@ const Form: React.FC<Props> = (props) => {
                     </Box>
                 </>
             )}
-            <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email"
-                name="email"
-                autoComplete="email"
-                autoFocus
-                value={email}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-            />
 
-            <TextField
-                margin="normal"
-                required
-                fullWidth
+            <BaseInput
+                name="email"
+                label="Email"
+                value={email}
+                setValue={setEmail}
+            />
+            <BaseInput
                 name="password"
                 label="Password"
-                type="password"
-                id="password"
-                autoComplete="password"
                 value={password}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                setValue={setPassword}
             />
             <EmailAuthButton/>
             <Grid container>
