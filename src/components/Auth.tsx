@@ -13,28 +13,14 @@ import {
     createTheme,
     ThemeProvider,
     IconButton,
-    Modal
 } from '@mui/material'
-
 import EmailIcon from '@mui/icons-material/Email';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import SendIcon from '@mui/icons-material/Send';
 import CameraIcon from '@mui/icons-material/Camera';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {useAuth} from "../hooks/useAuth";
+import ResetPassWordModal from "./ResetPassWordModal";
 
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-    display: 'flex',
-    alignItems: 'center'
-};
 
 const theme = createTheme();
 
@@ -48,12 +34,9 @@ const Auth = () => {
         setUserName,
         avatarImage,
         setAvatarImage,
-        resetEmail,
-        setResetEmail,
         signUpEmail,
         signInEmail,
         sighInGoogle,
-        sendResetEmail
     } = useAuth()
     const [isLogin, setIsLogin] = useState(true)
     const [openModal, setOpenModal] = useState(false)
@@ -96,7 +79,7 @@ const Auth = () => {
                         }}
                     >
                         <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
-                            {/*<LockOutlinedIcon />*/}
+                            <LockOutlinedIcon/>
                         </Avatar>
                         <Typography component="h1" variant="h5">
                             {isLogin ? "Login" : "Register"}
@@ -195,40 +178,26 @@ const Auth = () => {
                                     </span>
                                 </Grid>
                             </Grid>
+                            <Button
+                                fullWidth
+                                variant="contained"
+                                sx={{mt: 3, mb: 2}}
+                                startIcon={<CameraIcon/>}
+                                onClick={sighInGoogle}
+                            >
+                                SignIn with Google
+                            </Button>
                         </Box>
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            sx={{mt: 3, mb: 2}}
-                            startIcon={<CameraIcon/>}
-                            onClick={sighInGoogle}
-                        >
-                            SignIn with Google
-                        </Button>
                     </Box>
                 </Grid>
             </Grid>
 
             {/*Reset Password Modal*/}
-            <Modal
-                open={openModal}
-                onClose={() => setOpenModal(false)}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style} className={styles.login_modal}>
-                    <TextField
-                        type="email"
-                        name="email"
-                        label="Reset Email"
-                        value={resetEmail}
-                        onChange={(e) => setResetEmail(e.target.value)}
-                    />
-                    <IconButton onClick={sendResetEmail}>
-                        <SendIcon/>
-                    </IconButton>
-                </Box>
-            </Modal>l
+            <ResetPassWordModal
+                openModal={openModal}
+                setOpenModal={setOpenModal}
+            />
+
 
         </ThemeProvider>
     );
