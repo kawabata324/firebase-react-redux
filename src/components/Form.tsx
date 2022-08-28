@@ -1,4 +1,4 @@
-import {Box, Grid, IconButton, TextField} from "@mui/material";
+import {Box, Grid, IconButton} from "@mui/material";
 import React from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import styles from "./Auth.module.css";
@@ -78,7 +78,13 @@ const Form: React.FC<Props> = (props) => {
                 value={password}
                 setValue={setPassword}
             />
-            <EmailAuthButton/>
+            <EmailAuthButton
+                email={email}
+                password={password}
+                userName={userName}
+                avatarImage={avatarImage}
+                isLogin={isLogin}
+            />
             <Grid container>
                 <Grid item xs>
                                     <span

@@ -4,7 +4,7 @@ import {
     signInWithPopup,
     updateProfile
 } from "firebase/auth";
-import {auth, provider, storage} from "../firebase/firebase";
+import {auth, google, storage} from "../firebase/firebase";
 import {useState} from "react";
 import {getDownloadURL, ref, uploadBytes} from "firebase/storage";
 import {updateUserProfile} from "../features/userSlice";
@@ -19,7 +19,7 @@ export const useAuth = () => {
     const [userName, setUserName] = useState("")
     const [avatarImage, setAvatarImage] = useState<File | null>(null)
     const [resetEmail, setResetEmail] = useState("")
-    const [isLogin, setIsLogin] = useState(false)
+    const [isLogin, setIsLogin] = useState(true)
 
 
     const dispatch = useDispatch()
@@ -70,7 +70,7 @@ export const useAuth = () => {
     */
     const sighInGoogle = async () => {
         try {
-            await signInWithPopup(auth, provider)
+            await signInWithPopup(auth, google)
         } catch (e: any) {
             console.log(e.message)
         }

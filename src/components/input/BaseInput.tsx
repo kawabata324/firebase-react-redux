@@ -18,7 +18,7 @@ const BaseInput: React.FC<Props> = (props) => {
             id={name}
             label={label}
             name={name}
-            autoComplete={name}
+            autoComplete={name === "password" ? "current-password" : name}
             autoFocus
             value={value}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}

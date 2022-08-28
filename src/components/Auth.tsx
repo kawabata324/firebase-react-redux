@@ -61,14 +61,13 @@ const Auth = () => {
                         </Typography>
                         <Form
                             isLogin={isLogin}
-                            setIsLogin={setIsLogin}
                             setOpenModal={setOpenModal}
+                            setIsLogin={setIsLogin}
                         />
                     </Box>
                 </Grid>
             </Grid>
 
-            {/*Reset Password Modal*/}
             <ResetPassWordModal
                 openModal={openModal}
                 setOpenModal={setOpenModal}
