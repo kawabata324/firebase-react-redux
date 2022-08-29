@@ -1,6 +1,6 @@
 import {Button} from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
-import React, {useEffect} from "react";
+import React from "react";
 import {useAuth} from "../../hooks/useAuth";
 
 interface Props {
@@ -12,7 +12,6 @@ interface Props {
 }
 
 const EmailAuthButton: React.FC<Props> = (props) => {
-    const auth = useAuth()
     const {
         signUpEmail,
         signInEmail
@@ -39,7 +38,7 @@ const EmailAuthButton: React.FC<Props> = (props) => {
                 startIcon={<EmailIcon/>}
                 onClick={
                     isLogin ?
-                        signInEmail : signUpEmail
+                        () => signInEmail(email, password) : () => signUpEmail(email, password, avatarImage, userName)
                 }
             >
                 {isLogin ? "Login" : "Register"}

@@ -1,8 +1,7 @@
 import {Box, Grid, IconButton} from "@mui/material";
-import React from "react";
+import React, {useState} from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import styles from "./Auth.module.css";
-import {useAuth} from "../hooks/useAuth";
 import GoogleSignInButton from "./button/GoogleSignInButton";
 import EmailAuthButton from "./button/EmailAuthButton";
 import BaseInput from "./input/BaseInput";
@@ -16,17 +15,11 @@ interface Props {
 const Form: React.FC<Props> = (props) => {
     const {isLogin, setIsLogin, setOpenModal} = props
 
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [userName, setUserName] = useState("")
+    const [avatarImage, setAvatarImage] = useState<File | null>(null)
 
-    const {
-        email,
-        setEmail,
-        password,
-        setPassword,
-        userName,
-        setUserName,
-        avatarImage,
-        setAvatarImage,
-    } = useAuth()
 
     const onChangeImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files![0]) {

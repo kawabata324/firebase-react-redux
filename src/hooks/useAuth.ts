@@ -14,10 +14,6 @@ export const useAuth = () => {
     /*
      * メール認証 State
      */
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [userName, setUserName] = useState("")
-    const [avatarImage, setAvatarImage] = useState<File | null>(null)
     const [resetEmail, setResetEmail] = useState("")
     const [isLogin, setIsLogin] = useState(true)
 
@@ -29,12 +25,15 @@ export const useAuth = () => {
      * Email Password　を用いたユーザー登録
      *
      */
-    const signUpEmail = async () => {
+    const signUpEmail = async (email: string,
+                               password: string,
+                               avatarImage: File | null,
+                               userName: string) => {
         try {
             await createUserWithEmailAndPassword(auth, email, password)
             let url = ""
             if (avatarImage) {
-                const storageRef = await upLoadAvatarImage()
+                const storageRef = await upLoadAvatarImage(avatarImage)
 
                 url = await getDownloadURL(storageRef)
                 await updateProfile(auth.currentUser!, {
@@ -57,7 +56,7 @@ export const useAuth = () => {
     * Email Password を用いたログイン
     * Todo メール認証を機能として加える
     * */
-    const signInEmail = async () => {
+    const signInEmail = async (email: string, password: string) => {
         try {
             await signInWithEmailAndPassword(auth, email, password)
         } catch (e: any) {
@@ -104,7 +103,7 @@ export const useAuth = () => {
         );
     }
 
-    const upLoadAvatarImage = async () => {
+    const upLoadAvatarImage = async (avatarImage: File | null) => {
         const fileName = getUniqueStr(16) + "_" + avatarImage!.name
 
         const storageRef = ref(storage, `avatars/${fileName}`)
@@ -118,14 +117,6 @@ export const useAuth = () => {
     }
 
     return {
-        email,
-        setEmail,
-        password,
-        setPassword,
-        userName,
-        setUserName,
-        avatarImage,
-        setAvatarImage,
         resetEmail,
         setResetEmail,
         isLogin,
