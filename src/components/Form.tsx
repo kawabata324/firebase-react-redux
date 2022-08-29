@@ -5,6 +5,7 @@ import styles from "./Auth.module.css";
 import GoogleSignInButton from "./button/GoogleSignInButton";
 import EmailAuthButton from "./button/EmailAuthButton";
 import BaseInput from "./input/BaseInput";
+import GitHubSignInButton from "./button/GitHubSignInButton";
 
 interface Props {
     isLogin: boolean
@@ -96,6 +97,7 @@ const Form: React.FC<Props> = (props) => {
                 </Grid>
             </Grid>
             <GoogleSignInButton/>
+            <GitHubSignInButton/>
         </Box>
 
     )

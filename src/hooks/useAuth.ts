@@ -4,7 +4,7 @@ import {
     signInWithPopup,
     updateProfile
 } from "firebase/auth";
-import {auth, google, storage} from "../firebase/firebase";
+import {auth, github, google, storage} from "../firebase/firebase";
 import {useState} from "react";
 import {getDownloadURL, ref, uploadBytes} from "firebase/storage";
 import {updateUserProfile} from "../features/userSlice";
@@ -74,6 +74,17 @@ export const useAuth = () => {
             console.log(e.message)
         }
     }
+    /*
+    * GitHub 認証
+    */
+    const signInGitHub = async () => {
+        try {
+            const result = await signInWithPopup(auth, github)
+            console.log(result)
+        } catch (e: any) {
+            console.log(e.message)
+        }
+    }
 
     /*
      * Password　reset Email
@@ -124,6 +135,7 @@ export const useAuth = () => {
         signUpEmail,
         signInEmail,
         sighInGoogle,
+        signInGitHub,
         sendResetEmail
     }
 }
