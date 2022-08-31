@@ -136,7 +136,8 @@ export const useAuth = () => {
         signInEmail,
         sighInGoogle,
         signInGitHub,
-        sendResetEmail
+        sendResetEmail,
+        getUniqueStr
     }
 }
 
